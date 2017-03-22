@@ -109,6 +109,7 @@ echo_info "Installing required gem: fastlane"
 gem install fastlane
 
 echo_info "Downloading provisioning profile"
+export FASTLANE_PASSWORD="$portal_password"
 fastlane sigh -u $portal_username \
               -b $team_id \
               -a $bundle_id \
