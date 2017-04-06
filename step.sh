@@ -2,7 +2,7 @@
 
 THIS_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-set -ex
+set -e
 
 #=======================================
 # Functions
@@ -109,9 +109,7 @@ echo_info "Installing required gem: fastlane"
 gem install fastlane
 
 echo_info "Downloading provisioning profile"
-set +x
 export FASTLANE_PASSWORD="$portal_password"
-set -x
 fastlane sigh -u $portal_username \
               -b $team_id \
               -a $bundle_id \
