@@ -113,8 +113,8 @@ export FASTLANE_PASSWORD="$portal_password"
 fastlane sigh -u $portal_username \
               -b $team_id \
               -a $bundle_id \
-              -n $profile_name \
-              -q $target_filename \
+              -n "$profile_name" \
+              -q "$target_filename" \
               --ignore_profiles_with_different_name \
               --skip_certificate_verification
 
