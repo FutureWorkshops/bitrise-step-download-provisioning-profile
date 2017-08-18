@@ -23,6 +23,7 @@ workflows:
         - profile_name: "Harmony"
         - bundle_id: com.harmonyplatform.harmony
         - team_id: MW4ZU34DSH
+        - deployment_type: ad-hoc
         - portal_username: $PORTAL_USERNAME
         - portal_password: $PORTAL_PASSWORD
           

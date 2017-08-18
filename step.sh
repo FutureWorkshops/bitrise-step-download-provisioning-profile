@@ -87,6 +87,7 @@ echo_details "* bundle_id: $bundle_id"
 echo_details "* team_id: $team_id"
 echo_details "* portal_username: $portal_username"
 echo_details "* portal_password: ***"
+echo_details "* deployment_type: $deployment_type"
 echo_details "* target_variable: $target_variable"
 echo_details "* target_filename: $target_filename"
 echo
@@ -96,6 +97,7 @@ validate_required_input "bundle_id" $bundle_id
 validate_required_input "team_id" $team_id
 validate_required_input "portal_username" $portal_username
 validate_required_input "portal_password" $portal_password
+validate_required_input "deployment_type" $deployment_type
 validate_required_input "target_variable" $target_variable
 validate_required_input "target_filename" $target_filename
 
@@ -110,9 +112,13 @@ gem install fastlane
 
 echo_info "Downloading provisioning profile"
 export FASTLANE_PASSWORD="$portal_password"
+ADHOC_FLAG=""
+[ "$deployment_type" == "ad-hoc" ] && ADHOC_FLAG="--adhoc"
+
 fastlane sigh -u $portal_username \
               -b $team_id \
               -a $bundle_id \
+              $ADHOC_FLAG \
               -n "$profile_name" \
               -q "$target_filename" \
               --ignore_profiles_with_different_name \

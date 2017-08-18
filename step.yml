@@ -35,7 +35,6 @@ inputs:
       is_expand: true
       is_required: true
       value_options: []
-
   - team_id: ''
     opts:
       title: "Team ID"
@@ -44,6 +43,14 @@ inputs:
       is_expand: true
       is_required: true
       value_options: []
+  - deployment_type: 'app-store'
+    opts:
+      title: "Deployment type"
+      summary: "The type of provisioning profile (enterprise, app-store, ad-hoc)"
+      description: 
+      is_expand: true
+      is_required: true
+      value_options: ['enterprise', 'app-store', 'ad-hoc']
   - portal_username: ''
     opts:
       title: "Developer portal username"
