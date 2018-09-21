@@ -115,14 +115,20 @@ export FASTLANE_PASSWORD="$portal_password"
 ADHOC_FLAG=""
 [ "${deployment_type}" == "ad-hoc" ] && ADHOC_FLAG="--adhoc"
 
-fastlane "_"$fastlane_version"_" sigh -u ${portal_username} \
-              -b ${team_id} \
-              -a ${bundle_id} \
-              ${ADHOC_FLAG} \
-              -n "${profile_name}" \
-              -q "${target_filename}" \
-              --ignore_profiles_with_different_name \
-              --skip_certificate_verification
+COMMAND=sigh -u ${portal_username} \
+	              -b ${team_id} \
+	              -a ${bundle_id} \
+	              ${ADHOC_FLAG} \
+	              -n "${profile_name}" \
+	              -q "${target_filename}" \
+	              --ignore_profiles_with_different_name \
+	              --skip_certificate_verification
+
+if [ "${fastlane_version}" == "latest" ] ; then
+	fastlane COMMAND
+else
+	fastlane "_"$fastlane_version"_" COMMAND
+fi
 
 echo_info "Setting environment variable"
 envman add --key "${target_variable}" --value "file://./$target_filename"
