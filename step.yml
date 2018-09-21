@@ -23,28 +23,28 @@ inputs:
       title: "Fastlane version"
       summary: This allow you to specify a specific Fastlane version to be used by the script.
       description: This allow you to specify a specific Fastlane version to be used by the script.
-      is_expand: false
+      is_expand: true
       is_required: true
   - profile_name: ''
     opts:
       title: "Profile name"
       summary: The provisioning profile name as it appears on the developer portal
       description: The provisioning profile name as it appears on the developer portal
-      is_expand: false
+      is_expand: true
       is_required: true
   - bundle_id: ''
     opts:
       title: "Bundle ID"
       summary: The bundle ID of the app
       description: 
-      is_expand: false
+      is_expand: true
       is_required: true
   - team_id: ''
     opts:
       title: "Team ID"
       summary: "The Apple developer portal's team ID"
       description: 
-      is_expand: false
+      is_expand: true
       is_required: true
   - deployment_type: 'app-store'
     opts:
@@ -59,28 +59,28 @@ inputs:
       title: "Developer portal username"
       summary: "The username of a valid account to the Apple developer portal's"
       description: 
-      is_expand: false
+      is_expand: true
       is_required: true
   - portal_password: ''
     opts:
       title: "Developer portal password"
       summary: "The password of a valid account to the Apple developer portal's"
       description: 
-      is_expand: false
+      is_expand: true
       is_required: true
   - target_variable: 'PROVISIONING_PROFILE'
     opts:
       title: "Target env variable"
       summary: "Environment variable that will contain the path to the provisioning profile's name"
       description:  
-      is_expand: false
+      is_expand: true
       is_required: true
   - target_filename: 'profile.mobileprovision'
     opts:
       title: "Provisioning profile file name"
       summary: "The name of the local file where the provisioning profile will be saved"
       description:  
-      is_expand: false
+      is_expand: true
       is_required: true
 
 
