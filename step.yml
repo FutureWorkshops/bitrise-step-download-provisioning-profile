@@ -1,10 +1,9 @@
-title: "S3 Download"
-summary: This step allows to download a file from an S3 bucket.
+title: "Download provisioning profile"
+summary: This step allows to download a provisioning profile from Apple's portal using Fastlane.
 description: |-
-   This step allows to download a file from an S3 bucket using an Access/secret keypair
-   for authentication.
-website: https://github.com/FutureWorkshops/bitrise-step-s3-download
-source_code_url: https://github.com/FutureWorkshops/bitrise-step-s3-download
+   This step allows to download a file from the Apple's developer portal.
+website: https://github.com/FutureWorkshops/bitrise-step-download-provisioning-profile
+source_code_url: https://github.com/FutureWorkshops/bitrise-step-download-provisioning-profile
 host_os_tags:
   - osx-10.10
   - osx-10.9
@@ -24,25 +23,22 @@ inputs:
       title: "Profile name"
       summary: The provisioning profile name as it appears on the developer portal
       description: The provisioning profile name as it appears on the developer portal
-      is_expand: true
+      is_expand: false
       is_required: true
-      value_options: []
   - bundle_id: ''
     opts:
       title: "Bundle ID"
       summary: The bundle ID of the app
       description: 
-      is_expand: true
+      is_expand: false
       is_required: true
-      value_options: []
   - team_id: ''
     opts:
       title: "Team ID"
       summary: "The Apple developer portal's team ID"
       description: 
-      is_expand: true
+      is_expand: false
       is_required: true
-      value_options: []
   - deployment_type: 'app-store'
     opts:
       title: "Deployment type"
@@ -56,33 +52,29 @@ inputs:
       title: "Developer portal username"
       summary: "The username of a valid account to the Apple developer portal's"
       description: 
-      is_expand: true
+      is_expand: false
       is_required: true
-      value_options: []
   - portal_password: ''
     opts:
       title: "Developer portal password"
       summary: "The password of a valid account to the Apple developer portal's"
       description: 
-      is_expand: true
+      is_expand: false
       is_required: true
-      value_options: []
   - target_variable: 'PROVISIONING_PROFILE'
     opts:
       title: "Target env variable"
       summary: "Environment variable that will contain the path to the provisioning profile's name"
       description:  
-      is_expand: true
+      is_expand: false
       is_required: true
-      value_options: []
   - target_filename: 'profile.mobileprovision'
     opts:
       title: "Provisioning profile file name"
       summary: "The name of the local file where the provisioning profile will be saved"
       description:  
-      is_expand: true
+      is_expand: false
       is_required: true
-      value_options: []
 
 
 outputs:
