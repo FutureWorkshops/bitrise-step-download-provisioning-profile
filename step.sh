@@ -90,6 +90,7 @@ echo_details "* portal_password: ***"
 echo_details "* deployment_type: $deployment_type"
 echo_details "* target_variable: $target_variable"
 echo_details "* target_filename: $target_filename"
+echo_details "* fastlane_version: $fastlane_version"
 echo
 
 validate_required_input "profile_name" $profile_name
@@ -100,22 +101,21 @@ validate_required_input "portal_password" $portal_password
 validate_required_input "deployment_type" $deployment_type
 validate_required_input "target_variable" $target_variable
 validate_required_input "target_filename" $target_filename
-
-# eval expanded_xcode_project_path="${xcode_project_path}"
-#
-# if [ ! -e "${expanded_xcode_project_path}/project.pbxproj" ]; then
-#   echo_fail "No valid Xcode project found at path: ${expanded_xcode_project_path}"
-# fi
+validate_required_input "fastlane_version" $fastlane_version
 
 echo_info "Installing required gem: fastlane"
-gem install fastlane
+if [ "$fastlane_version" == "latest" ] ; then
+	gem install fastlane
+else
+	gem install fastlane -v $fastlane_version
+fi
 
 echo_info "Downloading provisioning profile"
 export FASTLANE_PASSWORD="$portal_password"
 ADHOC_FLAG=""
 [ "$deployment_type" == "ad-hoc" ] && ADHOC_FLAG="--adhoc"
 
-fastlane sigh -u $portal_username \
+fastlane "_"$fastlane_version"_" sigh -u $portal_username \
               -b $team_id \
               -a $bundle_id \
               $ADHOC_FLAG \

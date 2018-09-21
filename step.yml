@@ -18,6 +18,13 @@ is_skippable: false
 deps:
 run_if: ""
 inputs:
+  - fastlane_version: 'latest'
+    opts:
+      title: "Fastlane version"
+      summary: This allow you to specify a specific Fastlane version to be used by the script.
+      description: This allow you to specify a specific Fastlane version to be used by the script.
+      is_expand: false
+      is_required: true
   - profile_name: ''
     opts:
       title: "Profile name"
