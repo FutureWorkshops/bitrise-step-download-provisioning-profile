@@ -105,9 +105,13 @@ validate_required_input "fastlane_version" $fastlane_version
 
 echo_info "Installing required gem: fastlane"
 if [ "${fastlane_version}" == "latest" ] ; then
-	gem install fastlane
+	if [ "$(fastlane -v | grep "^fastlane" | tail -1 )" != "" ] ; then
+		gem install fastlane
+	fi
 else
-	gem install fastlane -v $fastlane_version
+	if [ "$(fastlane "_"$fastlane_version"_" -v | grep "^fastlane" | tail -1 )" != "fastlane ${fastlane_version}" ] ; then
+		gem install fastlane -v $fastlane_version
+	fi
 fi
 
 echo_info "Downloading provisioning profile"
