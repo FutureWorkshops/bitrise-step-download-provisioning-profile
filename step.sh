@@ -123,8 +123,8 @@ COMMAND="sigh -u ${portal_username}
 -b ${team_id} 
 -a ${bundle_id} 
 ${ADHOC_FLAG} 
--n \"${profile_name}\" 
--q ${target_filename} 
+-n '${profile_name}' 
+-q '${target_filename}' 
 --ignore_profiles_with_different_name --skip_certificate_verification"
 
 if [ "${fastlane_version}" == "latest" ] ; then
