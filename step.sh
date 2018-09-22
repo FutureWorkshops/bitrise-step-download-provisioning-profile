@@ -125,9 +125,9 @@ COMMAND=sigh -u ${portal_username} \
 	              --skip_certificate_verification
 
 if [ "${fastlane_version}" == "latest" ] ; then
-	fastlane COMMAND
+	fastlane ${COMMAND}
 else
-	fastlane "_"$fastlane_version"_" COMMAND
+	fastlane "_"$fastlane_version"_" ${COMMAND}
 fi
 
 echo_info "Setting environment variable"
