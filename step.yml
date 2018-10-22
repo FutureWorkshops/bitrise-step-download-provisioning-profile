@@ -20,8 +20,8 @@ inputs:
   - fastlane_version: 'latest'
     opts:
       title: "Fastlane version"
-      summary: This allow you to specify a specific Fastlane version to be used by the script.
-      description: This allow you to specify a specific Fastlane version to be used by the script.
+      summary: "Set the fastlane version to be used"
+      description: "The developer is allowed to set a specific version of the fastlane gem to be used during the step"
       is_expand: true
       is_required: true
   - profile_name: ''
@@ -67,7 +67,7 @@ inputs:
       description: 
       is_expand: true
       is_required: true
-  - target_variable: 'PROVISIONING_PROFILE'
+  - target_variable: '$PROVISIONING_PROFILE'
     opts:
       title: "Target env variable"
       summary: "Environment variable that will contain the path to the provisioning profile's name"

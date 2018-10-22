@@ -103,11 +103,22 @@ validate_required_input "target_variable" $target_variable
 validate_required_input "target_filename" $target_filename
 validate_required_input "fastlane_version" $fastlane_version
 
-echo_info "Installing required gem: fastlane"
+# Since 'latest' cannot be used a valid gem version, there is a logic to remove version commands.
+# Also, to avoid loosing time re-downloading an already installed fastlane version, the -v command is checked.
 if [ "${fastlane_version}" == "latest" ] ; then
-    gem install fastlane
+    if [ "$(fastlane -v | grep "^fastlane" | tail -1 )" == "" ] ; then
+        echo_info "Installing required gem: fastlane"
+        gem install fastlane
+    else
+        echo_info "Using $(fastlane -v | grep "^fastlane" | tail -1 )"
+    fi
 else
-    gem install fastlane -v $fastlane_version
+    if [ "$(fastlane "_"$fastlane_version"_" -v | grep "^fastlane" | tail -1 )" != "fastlane ${fastlane_version}" ] ; then
+        echo_info "Installing required gem: fastlane"
+        gem install fastlane -v $fastlane_version
+    else
+        echo_info "Using $(fastlane "_"$fastlane_version"_" -v | grep "^fastlane" | tail -1 )"
+    fi
 fi
 
 echo_info "Downloading provisioning profile"
@@ -115,19 +126,24 @@ export FASTLANE_PASSWORD="$portal_password"
 ADHOC_FLAG=""
 [ "${deployment_type}" == "ad-hoc" ] && ADHOC_FLAG="--adhoc"
 
-COMMAND=sigh -u ${portal_username} \
-                -b ${team_id} \
-                -a ${bundle_id} \
-                ${ADHOC_FLAG} \
-                -n "${profile_name}" \
-                -q "${target_filename}" \
-                --ignore_profiles_with_different_name \
-                --skip_certificate_verification
-
+# The sigh command is duplicated to ensure that the correct fastlane version is used
+# this is done in case that a previous step installed a different version of fastlane
 if [ "${fastlane_version}" == "latest" ] ; then
-    fastlane COMMAND
+    fastlane sigh -u ${portal_username} \
+                    -b ${team_id} \
+                    -a ${bundle_id} \
+                    ${ADHOC_FLAG} \
+                    -n "${profile_name}" \
+                    -q "${target_filename}" \
+                    --ignore_profiles_with_different_name --skip_certificate_verification
 else
-    fastlane "_"$fastlane_version"_" COMMAND
+    fastlane "_"$fastlane_version"_" sigh -u ${portal_username} \
+                                            -b ${team_id} \
+                                            -a ${bundle_id} \
+                                            ${ADHOC_FLAG} \
+                                            -n "${profile_name}" \
+                                            -q "${target_filename}" \
+                                            --ignore_profiles_with_different_name --skip_certificate_verification
 fi
 
 echo_info "Setting environment variable"
