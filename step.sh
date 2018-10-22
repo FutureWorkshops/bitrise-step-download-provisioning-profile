@@ -15,64 +15,64 @@ BLUE='\033[00;34m'
 GREEN='\033[00;32m'
 
 function color_echo {
-	color=$1
-	msg=$2
-	echo -e "${color}${msg}${RESTORE}"
+    color=$1
+    msg=$2
+    echo -e "${color}${msg}${RESTORE}"
 }
 
 function echo_fail {
-	msg=$1
-	echo
-	color_echo "${RED}" "${msg}"
-	exit 1
+    msg=$1
+    echo
+    color_echo "${RED}" "${msg}"
+    exit 1
 }
 
 function echo_warn {
-	msg=$1
-	color_echo "${YELLOW}" "${msg}"
+    msg=$1
+    color_echo "${YELLOW}" "${msg}"
 }
 
 function echo_info {
-	msg=$1
-	echo
-	color_echo "${BLUE}" "${msg}"
+    msg=$1
+    echo
+    color_echo "${BLUE}" "${msg}"
 }
 
 function echo_details {
-	msg=$1
-	echo "  ${msg}"
+    msg=$1
+    echo "  ${msg}"
 }
 
 function echo_done {
-	msg=$1
-	color_echo "${GREEN}" "  ${msg}"
+    msg=$1
+    color_echo "${GREEN}" "  ${msg}"
 }
 
 function validate_required_input {
-	key=$1
-	value=$2
-	if [ -z "${value}" ] ; then
-		echo_fail "[!] Missing required input: ${key}"
-	fi
+    key=$1
+    value=$2
+    if [ -z "${value}" ] ; then
+        echo_fail "[!] Missing required input: ${key}"
+    fi
 }
 
 function validate_required_input_with_options {
-	key=$1
-	value=$2
-	options=$3
+    key=$1
+    value=$2
+    options=$3
 
-	validate_required_input "${key}" "${value}"
+    validate_required_input "${key}" "${value}"
 
-	found="0"
-	for option in "${options[@]}" ; do
-		if [ "${option}" == "${value}" ] ; then
-			found="1"
-		fi
-	done
+    found="0"
+    for option in "${options[@]}" ; do
+        if [ "${option}" == "${value}" ] ; then
+            found="1"
+        fi
+    done
 
-	if [ "${found}" == "0" ] ; then
-		echo_fail "Invalid input: (${key}) value: (${value}), valid options: ($( IFS=$", "; echo "${options[*]}" ))"
-	fi
+    if [ "${found}" == "0" ] ; then
+        echo_fail "Invalid input: (${key}) value: (${value}), valid options: ($( IFS=$", "; echo "${options[*]}" ))"
+    fi
 }
 
 #=======================================
@@ -105,9 +105,9 @@ validate_required_input "fastlane_version" $fastlane_version
 
 echo_info "Installing required gem: fastlane"
 if [ "${fastlane_version}" == "latest" ] ; then
-	gem install fastlane
+    gem install fastlane
 else
-	gem install fastlane -v $fastlane_version
+    gem install fastlane -v $fastlane_version
 fi
 
 echo_info "Downloading provisioning profile"
@@ -116,18 +116,18 @@ ADHOC_FLAG=""
 [ "${deployment_type}" == "ad-hoc" ] && ADHOC_FLAG="--adhoc"
 
 COMMAND=sigh -u ${portal_username} \
-	              -b ${team_id} \
-	              -a ${bundle_id} \
-	              ${ADHOC_FLAG} \
-	              -n "${profile_name}" \
-	              -q "${target_filename}" \
-	              --ignore_profiles_with_different_name \
-	              --skip_certificate_verification
+                -b ${team_id} \
+                -a ${bundle_id} \
+                ${ADHOC_FLAG} \
+                -n "${profile_name}" \
+                -q "${target_filename}" \
+                --ignore_profiles_with_different_name \
+                --skip_certificate_verification
 
 if [ "${fastlane_version}" == "latest" ] ; then
-	fastlane COMMAND
+    fastlane COMMAND
 else
-	fastlane "_"$fastlane_version"_" COMMAND
+    fastlane "_"$fastlane_version"_" COMMAND
 fi
 
 echo_info "Setting environment variable"

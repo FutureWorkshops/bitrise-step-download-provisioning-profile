@@ -1,7 +1,6 @@
 title: "Download provisioning profile"
 summary: This step allows to download a provisioning profile from Apple's portal using Fastlane.
-description: |-
-   This step allows to download a file from the Apple's developer portal.
+description: This step allows to download a file from the Apple's developer portal.
 website: https://github.com/FutureWorkshops/bitrise-step-download-provisioning-profile
 source_code_url: https://github.com/FutureWorkshops/bitrise-step-download-provisioning-profile
 host_os_tags:
