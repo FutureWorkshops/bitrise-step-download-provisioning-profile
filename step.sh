@@ -15,64 +15,64 @@ BLUE='\033[00;34m'
 GREEN='\033[00;32m'
 
 function color_echo {
-	color=$1
-	msg=$2
-	echo -e "${color}${msg}${RESTORE}"
+    color=$1
+    msg=$2
+    echo -e "${color}${msg}${RESTORE}"
 }
 
 function echo_fail {
-	msg=$1
-	echo
-	color_echo "${RED}" "${msg}"
-	exit 1
+    msg=$1
+    echo
+    color_echo "${RED}" "${msg}"
+    exit 1
 }
 
 function echo_warn {
-	msg=$1
-	color_echo "${YELLOW}" "${msg}"
+    msg=$1
+    color_echo "${YELLOW}" "${msg}"
 }
 
 function echo_info {
-	msg=$1
-	echo
-	color_echo "${BLUE}" "${msg}"
+    msg=$1
+    echo
+    color_echo "${BLUE}" "${msg}"
 }
 
 function echo_details {
-	msg=$1
-	echo "  ${msg}"
+    msg=$1
+    echo "  ${msg}"
 }
 
 function echo_done {
-	msg=$1
-	color_echo "${GREEN}" "  ${msg}"
+    msg=$1
+    color_echo "${GREEN}" "  ${msg}"
 }
 
 function validate_required_input {
-	key=$1
-	value=$2
-	if [ -z "${value}" ] ; then
-		echo_fail "[!] Missing required input: ${key}"
-	fi
+    key=$1
+    value=$2
+    if [ -z "${value}" ] ; then
+        echo_fail "[!] Missing required input: ${key}"
+    fi
 }
 
 function validate_required_input_with_options {
-	key=$1
-	value=$2
-	options=$3
+    key=$1
+    value=$2
+    options=$3
 
-	validate_required_input "${key}" "${value}"
+    validate_required_input "${key}" "${value}"
 
-	found="0"
-	for option in "${options[@]}" ; do
-		if [ "${option}" == "${value}" ] ; then
-			found="1"
-		fi
-	done
+    found="0"
+    for option in "${options[@]}" ; do
+        if [ "${option}" == "${value}" ] ; then
+            found="1"
+        fi
+    done
 
-	if [ "${found}" == "0" ] ; then
-		echo_fail "Invalid input: (${key}) value: (${value}), valid options: ($( IFS=$", "; echo "${options[*]}" ))"
-	fi
+    if [ "${found}" == "0" ] ; then
+        echo_fail "Invalid input: (${key}) value: (${value}), valid options: ($( IFS=$", "; echo "${options[*]}" ))"
+    fi
 }
 
 #=======================================
@@ -82,14 +82,15 @@ function validate_required_input_with_options {
 #
 # Validate parameters
 echo_info "Configs:"
-echo_details "* profile_name: $profile_name"
-echo_details "* bundle_id: $bundle_id"
-echo_details "* team_id: $team_id"
-echo_details "* portal_username: $portal_username"
+echo_details "* profile_name: ${profile_name}"
+echo_details "* bundle_id: ${bundle_id}"
+echo_details "* team_id: ${team_id}"
+echo_details "* portal_username: ${portal_username}"
 echo_details "* portal_password: ***"
-echo_details "* deployment_type: $deployment_type"
-echo_details "* target_variable: $target_variable"
-echo_details "* target_filename: $target_filename"
+echo_details "* deployment_type: ${deployment_type}"
+echo_details "* target_variable: ${target_variable}"
+echo_details "* target_filename: ${target_filename}"
+echo_details "* fastlane_version: ${fastlane_version}"
 echo
 
 validate_required_input "profile_name" $profile_name
@@ -100,30 +101,51 @@ validate_required_input "portal_password" $portal_password
 validate_required_input "deployment_type" $deployment_type
 validate_required_input "target_variable" $target_variable
 validate_required_input "target_filename" $target_filename
+validate_required_input "fastlane_version" $fastlane_version
 
-# eval expanded_xcode_project_path="${xcode_project_path}"
-#
-# if [ ! -e "${expanded_xcode_project_path}/project.pbxproj" ]; then
-#   echo_fail "No valid Xcode project found at path: ${expanded_xcode_project_path}"
-# fi
-
-echo_info "Installing required gem: fastlane"
-gem install fastlane
+# Since 'latest' cannot be used a valid gem version, there is a logic to remove version commands.
+# Also, to avoid loosing time re-downloading an already installed fastlane version, the -v command is checked.
+if [ "${fastlane_version}" == "latest" ] ; then
+    if [ "$(fastlane -v | grep "^fastlane" | tail -1 )" == "" ] ; then
+        echo_info "Installing required gem: fastlane"
+        gem install fastlane
+    else
+        echo_info "Using $(fastlane -v | grep "^fastlane" | tail -1 )"
+    fi
+else
+    if [ "$(fastlane "_"$fastlane_version"_" -v | grep "^fastlane" | tail -1 )" != "fastlane ${fastlane_version}" ] ; then
+        echo_info "Installing required gem: fastlane"
+        gem install fastlane -v $fastlane_version
+    else
+        echo_info "Using $(fastlane "_"$fastlane_version"_" -v | grep "^fastlane" | tail -1 )"
+    fi
+fi
 
 echo_info "Downloading provisioning profile"
 export FASTLANE_PASSWORD="$portal_password"
 ADHOC_FLAG=""
-[ "$deployment_type" == "ad-hoc" ] && ADHOC_FLAG="--adhoc"
+[ "${deployment_type}" == "ad-hoc" ] && ADHOC_FLAG="--adhoc"
 
-fastlane sigh -u $portal_username \
-              -b $team_id \
-              -a $bundle_id \
-              $ADHOC_FLAG \
-              -n "$profile_name" \
-              -q "$target_filename" \
-              --ignore_profiles_with_different_name \
-              --skip_certificate_verification
+# The sigh command is duplicated to ensure that the correct fastlane version is used
+# this is done in case that a previous step installed a different version of fastlane
+if [ "${fastlane_version}" == "latest" ] ; then
+    fastlane sigh -u ${portal_username} \
+                    -b ${team_id} \
+                    -a ${bundle_id} \
+                    ${ADHOC_FLAG} \
+                    -n "${profile_name}" \
+                    -q "${target_filename}" \
+                    --ignore_profiles_with_different_name --skip_certificate_verification
+else
+    fastlane "_"$fastlane_version"_" sigh -u ${portal_username} \
+                                            -b ${team_id} \
+                                            -a ${bundle_id} \
+                                            ${ADHOC_FLAG} \
+                                            -n "${profile_name}" \
+                                            -q "${target_filename}" \
+                                            --ignore_profiles_with_different_name --skip_certificate_verification
+fi
 
 echo_info "Setting environment variable"
-envman add --key $target_variable --value "file://./$target_filename"
+envman add --key "${target_variable}" --value "file://./$target_filename"
 
