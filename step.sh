@@ -106,12 +106,9 @@ validate_required_input "fastlane_version" $fastlane_version
 # Since 'latest' cannot be used a valid gem version, there is a logic to remove version commands.
 # Also, to avoid loosing time re-downloading an already installed fastlane version, the -v command is checked.
 if [ "${fastlane_version}" == "latest" ] ; then
-    if [ "$(fastlane -v | grep "^fastlane" | tail -1 )" == "" ] ; then
-        echo_info "Installing required gem: fastlane"
-        gem install fastlane
-    else
-        echo_info "Using $(fastlane -v | grep "^fastlane" | tail -1 )"
-    fi
+    echo_info "Installing required gem: fastlane"
+    gem install fastlane
+    echo_info "Using $(fastlane -v | grep "^fastlane" | tail -1 )"
 else
     if [ "$(fastlane "_"$fastlane_version"_" -v | grep "^fastlane" | tail -1 )" != "fastlane ${fastlane_version}" ] ; then
         echo_info "Installing required gem: fastlane"
