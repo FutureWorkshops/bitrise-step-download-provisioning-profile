@@ -132,7 +132,7 @@ if [ "${fastlane_version}" == "latest" ] ; then
                     ${ADHOC_FLAG} \
                     -n "${profile_name}" \
                     -q "${target_filename}" \
-                    --ignore_profiles_with_different_name --skip_certificate_verification
+                    --ignore_profiles_with_different_name --skip_certificate_verification --readonly
 else
     fastlane "_"$fastlane_version"_" sigh -u ${portal_username} \
                                             -b ${team_id} \
@@ -140,7 +140,7 @@ else
                                             ${ADHOC_FLAG} \
                                             -n "${profile_name}" \
                                             -q "${target_filename}" \
-                                            --ignore_profiles_with_different_name --skip_certificate_verification
+                                            --ignore_profiles_with_different_name --skip_certificate_verification --readonly
 fi
 
 echo_info "Setting environment variable"
