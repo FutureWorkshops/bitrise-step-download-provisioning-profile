@@ -20,11 +20,12 @@ workflows:
         description: ''
         run_if: true
         inputs:
-        - profile_name: "Harmony"
-        - bundle_id: com.harmonyplatform.harmony
-        - team_id: MW4ZU34DSH
-        - deployment_type: ad-hoc
+        - profile_name: $PROFILE_NAME
+        - bundle_id: $BUNDLE_ID
+        - team_id: $TEAM_ID
+        - deployment_type: $DEPLOYMENT
         - fastlane_version: "2.113.0"
+        - target_variable: 'PROVISIONING_PROFILE.mobileprovision'
         - portal_username: $PORTAL_USERNAME
         - portal_password: $PORTAL_PASSWORD
           

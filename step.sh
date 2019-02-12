@@ -111,7 +111,7 @@ if [ "${fastlane_version}" == "latest" ] ; then
     gem install fastlane
     echo_info "Using $(fastlane -v | grep "^fastlane" | tail -1 )"
 else
-    VERSION_FLAG="_$fastlane_version_"
+    VERSION_FLAG="_${fastlane_version}_"
     if [ "$(fastlane "${VERSION_FLAG}" -v | grep "^fastlane" | tail -1 )" != "fastlane ${VERSION_FLAG}" ] ; then
         echo_info "Installing required gem: fastlane"
         gem install fastlane -v $fastlane_version
