@@ -24,6 +24,7 @@ workflows:
         - bundle_id: com.harmonyplatform.harmony
         - team_id: MW4ZU34DSH
         - deployment_type: ad-hoc
+        - fastlane_version: "2.113.0"
         - portal_username: $PORTAL_USERNAME
         - portal_password: $PORTAL_PASSWORD
           
