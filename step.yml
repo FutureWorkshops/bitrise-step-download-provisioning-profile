@@ -2,20 +2,22 @@ title: "Download provisioning profile"
 summary: This step allows to download a provisioning profile from Apple's portal using Fastlane.
 description: This step allows to download a file from the Apple's developer portal.
 website: https://github.com/FutureWorkshops/bitrise-step-download-provisioning-profile
-source_code_url: https://github.com/FutureWorkshops/bitrise-step-download-provisioning-profile
+source_code_url: https://github.com/FutureWorkshops/bitrise-step-download-provisioning-profile.git
+support_url: https://github.com/FutureWorkshops/bitrise-step-download-provisioning-profile/issues
 host_os_tags:
   - osx-10.10
-  - osx-10.9
 project_type_tags:
   - ios
+  - macos
+  - react-native
   - xamarin
 type_tags:
-  - xcode
+  - code-sign
 is_requires_admin_user: true
 is_always_run: false
 is_skippable: false
 deps:
-run_if: ""
+run_if: .IsCI
 inputs:
   - fastlane_version: 'latest'
     opts:
@@ -60,6 +62,7 @@ inputs:
       description: 
       is_expand: true
       is_required: true
+      is_sensitive: true
   - portal_password: ''
     opts:
       title: "Developer portal password"
@@ -67,6 +70,7 @@ inputs:
       description: 
       is_expand: true
       is_required: true
+      is_sensitive: true
   - target_variable: '$PROVISIONING_PROFILE'
     opts:
       title: "Target env variable"
